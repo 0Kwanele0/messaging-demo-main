@@ -31,8 +31,7 @@ function Home() {
       }
     }
     getName();
-    return () => {
-  }
+    return () => {};
   }, [navigate]);
 
   return (
@@ -50,22 +49,22 @@ function Home() {
                 </div>
               </Link>
               <div className={styles.content}>
-              {data.length>0 &&
-                data.map((item, key) => {
-                  if (item.authorName !== hisName){
-                    return (
-                      <PostCard
-                        title={item.title}
-                        note={item.description}
-                        hisname={item.authorName}
-                        likes={item.likes}
-                        downloads={item.downloads}
-                        key={key}
-                      />
-                    )
-                  }
-                  return("")
-                })}
+                {data.length > 0 &&
+                  data.map((item, key) => {
+                    if (item.authorName !== hisName) {
+                      return (
+                        <PostCard
+                          title={item.title}
+                          note={item.description}
+                          hisname={item.authorName}
+                          likes={item.likes}
+                          downloads={item.downloads}
+                          key={key}
+                        />
+                      );
+                    }
+                    return "";
+                  })}
               </div>
             </div>
           )}

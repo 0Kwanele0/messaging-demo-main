@@ -12,26 +12,40 @@ function Authors() {
     async function getName() {
       const token = await localStorage.getItem("x-auth-token");
       if (token) {
-        setHisname(localStorage.getItem("userName"))
-        fetch("http://localhost:3001/api/user", {method:"GET", headers:{"content-type":"application/json", "x-auth-token": token}}).then(async authors=>{
-          const data = await authors.json()
-          setAuthors(data)
-        }).catch((errer)=>{console.log(errer)})
+        setHisname(localStorage.getItem("userName"));
+        fetch("http://localhost:3001/api/user", {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            "x-auth-token": token,
+          },
+        })
+          .then(async (authors) => {
+            const data = await authors.json();
+            setAuthors(data);
+          })
+          .catch((errer) => {
+            console.log(errer);
+          });
       } else {
         navigate("/login");
       }
     }
     getName();
-  }, [ navigate]);
+  }, [navigate]);
   return (
     <div>
       {author && (
         <div className={styles.container}>
-          {author.map((item, index)=>{
-              return(
-              hisname !== item.fullname ? <AuthorCard key={index} name={item.fullname} followers={item.followers.length} /> : null 
-              )
-              })}
+          {author.map((item, index) => {
+            return hisname !== item.fullname ? (
+              <AuthorCard
+                key={index}
+                name={item.fullname}
+                followers={item.followers.length}
+              />
+            ) : null;
+          })}
         </div>
       )}
     </div>
