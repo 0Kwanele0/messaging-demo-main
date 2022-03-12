@@ -14,25 +14,26 @@ function Profile() {
     navigate("/edit")
   }
   
-  function deleteUser(){
-    const id = localStorage.getItem("userId");
-    const url = "http://localhost:3001/api/user/" + id.replace(/['']+/g,'')
-    const token = localStorage.getItem("x-auth-token");
-    fetch(url, {method:"DELETE", 
-    headers:{ 
-      "content-type":"application/json", 
-      "x-auth-token":token
-    }
-    }).then(()=>{
-      localStorage.removeItem("x-auth-token");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("userName");
-      window.location.reload();
-    })
-  }
+  // function deleteUser(){
+  //   const id = localStorage.getItem("userId");
+  //   const url = "http://localhost:3001/api/user/" + id.replace(/['']+/g,'')
+  //   const token = localStorage.getItem("x-auth-token");
+  //   fetch(url, {method:"DELETE", 
+  //   headers:{ 
+  //     "content-type":"application/json", 
+  //     "x-auth-token":token
+  //   }
+  //   }).then(()=>{
+  //     localStorage.removeItem("x-auth-token");
+  //     localStorage.removeItem("userId");
+  //     localStorage.removeItem("userName");
+  //     window.location.reload();
+  //   })
+  // }
 
   useEffect(() => {
-    async function getName() {
+    let controller = new AbortController()
+    const getName = async()=> {
       const token = await localStorage.getItem("x-auth-token");
       if (token) {
         const id = await localStorage.getItem("userId");
@@ -41,25 +42,28 @@ function Profile() {
         setname(true);
         await fetch(url, {method: "GET", 
         headers:{ "content-type":"application/json",
-         "x-auth-token":token}}).then(async mydata=>{
+         "x-auth-token":token}, signal: controller.signal}).then(async mydata=>{
            const result = await mydata.json()
            setData(result)
-         })
+         }).catch(err=>console.log(err))
          fetch(urlForData, {
            method:"GET", 
-           headers:{"content-type":"application/json", "x-auth-token":token}
+           headers:{"content-type":"application/json", "x-auth-token":token},signal: controller.signal
           }).then(async data=>{
             const docs = await data.json()
             setPosts(docs)
             setPapers(docs.length)
             // console.log(posts)
-          })
+          }).catch(err=>console.log(err))
       } else {
         navigate("/login");
       }
     }
     getName();
-  }, [name,navigate,data,posts]);
+    return()=>{
+      controller.abort()
+    }
+  }, [name,navigate,posts]);
 
   return (
     <div>
@@ -79,7 +83,7 @@ function Profile() {
                   <p>Edit profile</p>
                   <img alt="pen" src="https://img.icons8.com/material-outlined/24/000000/edit--v1.png"/>
                 </div>
-                <div onClick={deleteUser} className={styles.each}>
+                <div onClick={null} className={styles.each}>
                   <p>Delete profile</p>
                   <img alt="trash" src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
                 </div>
@@ -87,7 +91,7 @@ function Profile() {
             <div className={styles.hisImage}></div>
             <h2>{data.fullname}</h2>
             <p>
-              {data.bio.length >1  ? data.bio : "your bio here"}
+              {/* {data.bio.length >1  ? data.bio : "your bio here"} */}
             </p>
             <div className={styles.stats}>
               <p>{data.followers.length} Followers</p>

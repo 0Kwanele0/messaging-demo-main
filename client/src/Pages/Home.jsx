@@ -31,6 +31,8 @@ function Home() {
       }
     }
     getName();
+    return () => {
+  }
   }, [name, navigate, data, hisName]);
 
   return (
