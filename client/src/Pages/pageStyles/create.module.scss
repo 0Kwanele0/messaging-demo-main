@@ -1,0 +1,45 @@
+.container {
+  background-color: ghostwhite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    input,
+    textarea {
+      width: 93%;
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid dodgerblue;
+      border-radius: 3px;
+      font-family: inherit;
+    }
+    button {
+      font-size: 19px;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      background-color: dodgerblue;
+      border-radius: 5px;
+      border: none;
+      color: rgb(227, 229, 241);
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease-in;
+      &:hover {
+        transform: scale(110%);
+      }
+    }
+    .error {
+      margin: 0;
+      color: red;
+      width: 100%;
+    }
+  }
+}

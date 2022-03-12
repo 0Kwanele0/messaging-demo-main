@@ -1,0 +1,37 @@
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  background-color: dodgerblue;
+  color: white;
+  padding: 20px;
+  align-items: center;
+  h3 {
+    margin: 0;
+  }
+  img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+}
+.subNav {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(145, 138, 151);
+  .iconContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h4 {
+      margin: 0;
+      color: rgb(93, 92, 100);
+    }
+    img {
+      width: 25px;
+    }
+  }
+  a {
+    text-decoration: none;
+  }
+}

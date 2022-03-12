@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #887;
+  padding: 10px 0;
+  .hisDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: rgb(63, 61, 85);
+    }
+    p {
+      margin: 0;
+    }
+    .hisImage {
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background-color: firebrick;
+    }
+  }
+  h4 {
+    color: dodgerblue;
+    font-size: 20px;
+  }
+}

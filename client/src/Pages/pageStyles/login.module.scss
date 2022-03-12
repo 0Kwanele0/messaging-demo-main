@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 90vh;
+  .form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    width: 100%;
+    .input {
+      font-size: 20px;
+      padding: 12px 12px;
+      margin: 8px 0;
+      border: 2px solid dodgerblue;
+      border-radius: 8px;
+    }
+    span {
+      color: red;
+    }
+    .error {
+      margin: 0;
+      color: red;
+    }
+    .button {
+      margin: 10px 0;
+      font-size: 22px;
+      padding: 13px 10px;
+      border: none;
+      background-color: dodgerblue;
+      color: rgb(217, 217, 224);
+      border-radius: 8px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  }
+  .redirect {
+    color: rgb(33, 35, 39);
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+    &:hover {
+      color: salmon;
+    }
+  }
+}

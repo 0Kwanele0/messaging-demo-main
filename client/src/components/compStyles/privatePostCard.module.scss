@@ -1,0 +1,64 @@
+.container {
+    border: 1px solid rgb(145, 145, 194);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 30px 0;
+    .person {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .hisDetails {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .menu {
+          display: flex;
+          .trash{
+            width: 40px;
+            margin: 5px;
+          }
+        }
+        h3 {
+          margin: 0;
+        }
+      }
+    }
+    .postImage {
+      height: 220px;
+      width: 100%;
+      background-color: rgb(67, 74, 80);
+    }
+    .content {
+      .reactions {
+        padding: 10px;
+        border-top: 1px solid rgb(231, 227, 227);
+        display: flex;
+        justify-content: space-between;
+        & p{
+          font-weight: 700;
+          font-size: 17px;
+        }
+        .likes{
+          display: flex;
+          align-items: center;
+          color: rgb(187, 23, 78);
+        }
+        .downloads{
+          display: flex;
+          align-items: center;
+          color: rgb(20, 51, 230);
+        }
+        img {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+          transition: all 0.2s ease-in;
+          &:hover {
+            transform: scale(110%);
+          }
+        }
+      }
+    }
+  }
+  
