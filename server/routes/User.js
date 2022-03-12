@@ -44,7 +44,6 @@ userRoute.post("/register", async (req, res) => {
     try {
       bcrypt.genSalt(10, (err, salt) => {
         if (salt){
-
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             const data = {
               fullname: req.body.fullname,
@@ -64,7 +63,8 @@ userRoute.post("/register", async (req, res) => {
       res.send("user not created", err);
     }
   } else {
-    res.send("Username already exist");
+    res.status(409).send({error: "Username already exist"});
+    
   }
 });
 

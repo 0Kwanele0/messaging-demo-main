@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "./pageStyles/register.module.scss";
 
 function Register() {
+  const [error, setError] = useState(false)
   const {
     register,
     formState: { errors },
@@ -17,12 +19,17 @@ function Register() {
       body: JSON.stringify(data),
     })
       .then(async (data) => {
-        const result = await data.json();
-        console.log(result);
-        localStorage.setItem("userId", result.user.id);
-        localStorage.setItem("userName", result.user.name);
-        localStorage.setItem("x-auth-token", result.token);
-        window.location.replace("/");
+        if (data.status === 200){
+          const result = await data.json();
+          console.log(result);
+          localStorage.setItem("userId", result.user.id);
+          localStorage.setItem("userName", result.user.name);
+          localStorage.setItem("x-auth-token", result.token);
+          window.location.replace("/");
+        }else{
+          const result = await data.json();
+          setError(result.error)
+        }
       })
       .catch((error) => console.log(error));
   }
@@ -70,6 +77,9 @@ function Register() {
         <span>
           {errors.password?.type === "required" && "Password is required"}
         </span>
+        {error && 
+        <p><span>{error}</span></p>
+        }
         <button className={styles.button} type="submit">
           Register
         </button>
