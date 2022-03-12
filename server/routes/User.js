@@ -43,7 +43,7 @@ userRoute.post("/register", async (req, res) => {
   if (exist.length < 1) {
     try {
       bcrypt.genSalt(10, (err, salt) => {
-        if (salt){
+        if (salt) {
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             const data = {
               fullname: req.body.fullname,
@@ -55,72 +55,67 @@ userRoute.post("/register", async (req, res) => {
               generateToken(results, res);
             });
           });
-        }else{
-          throw "Salt not generated"
+        } else {
+          throw "Salt not generated";
         }
       });
     } catch (err) {
       res.send("user not created", err);
     }
   } else {
-    res.status(409).send({error: "Username already exist"});
-    
+    res.status(409).send({ error: "Username already exist" });
   }
 });
 
-
-userRoute.get("/", async(req, res)=>{
-  try{
-    await UserModel.find().then(user=>{
-      res.send(user)
-    })
-  }catch(err){
-    res.status(404).send("no users")
+userRoute.get("/", async (req, res) => {
+  try {
+    await UserModel.find().then((user) => {
+      res.send(user);
+    });
+  } catch (err) {
+    res.status(404).send("no users");
   }
-})
+});
 
-
-userRoute.get("/:id", async(req, res)=>{
-  try{
-    const theUser = await UserModel.find({_id: req.params.id})
-    if (theUser){
-      res.send(theUser[0])
-    }else{
-      throw new Error("user not found")
+userRoute.get("/:id", async (req, res) => {
+  try {
+    const theUser = await UserModel.find({ _id: req.params.id });
+    if (theUser) {
+      res.send(theUser[0]);
+    } else {
+      throw new Error("user not found");
     }
-  }catch(error){
-    res.status(404).send("User not found!")
+  } catch (error) {
+    res.status(404).send("User not found!");
   }
-})
+});
 
-userRoute.delete("/:id", async(req, res)=>{
-  try{
-    const theUser = await UserModel.findByIdAndDelete({_id: req.params.id})
-    if(theUser){
-      res.send("User Deleted")
-    }else{
-      throw new Error("Unable to delete user!")
+userRoute.delete("/:id", async (req, res) => {
+  try {
+    const theUser = await UserModel.findByIdAndDelete({ _id: req.params.id });
+    if (theUser) {
+      res.send("User Deleted");
+    } else {
+      throw new Error("Unable to delete user!");
     }
-  }catch(error){
-    res.status(400).send(error.message)
+  } catch (error) {
+    res.status(400).send(error.message);
   }
-})
+});
 
-userRoute.put("/:id", async(req, res)=>{
+userRoute.put("/:id", async (req, res) => {
   UserModel.findByIdAndUpdate(
-    {_id: req.params.id},
+    { _id: req.params.id },
     {
-      fullname: req.body.fullname, 
-      bio: req.body.bio
+      bio: req.body.bio,
     }
-    ).then(user =>{
-      if (!user){
-        res.status(404).json({msg: "user not found"})
-      }else{
-        res.send("User edited!")
-      }
-    })
-    
-})
+  ).then((user) => {
+    if (!user) {
+      res.status(404).json({ msg: "user not found" });
+    } else {
+      res.send("User edited!");
+    }
+  });
+});
 
 module.exports = userRoute;

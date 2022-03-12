@@ -8,13 +8,11 @@ function Home() {
   const [name, setname] = useState(false);
   let navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [hisName, setHisname] = useState("");
 
   useEffect(() => {
     async function getName() {
       const theName = await localStorage.getItem("x-auth-token");
       if (theName) {
-        setHisname(localStorage.getItem("userName"));
         setname(true);
         fetch("http://localhost:3001/api/data/", {
           method: "GET",
@@ -51,19 +49,16 @@ function Home() {
               <div className={styles.content}>
                 {data.length > 0 &&
                   data.map((item, key) => {
-                    if (item.authorName !== hisName) {
-                      return (
-                        <PostCard
-                          title={item.title}
-                          note={item.description}
-                          hisname={item.authorName}
-                          likes={item.likes}
-                          downloads={item.downloads}
-                          key={key}
-                        />
-                      );
-                    }
-                    return "";
+                    return (
+                      <PostCard
+                        title={item.title}
+                        note={item.description}
+                        hisname={item.authorName}
+                        likes={item.likes}
+                        downloads={item.downloads}
+                        key={key}
+                      />
+                    );
                   })}
               </div>
             </div>

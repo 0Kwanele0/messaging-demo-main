@@ -105,7 +105,7 @@ function Profile() {
             </div>
             <div className={styles.hisImage}></div>
             <h2>{data.fullname}</h2>
-            <p>{/* {data.bio.length >1  ? data.bio : "your bio here"} */}</p>
+            {/* <p>{data.bio.length > 1 ? data.bio : "your bio here"}</p> */}
             <div className={styles.stats}>
               <p>{data.followers.length} Followers</p>
               <p>98 Following</p>

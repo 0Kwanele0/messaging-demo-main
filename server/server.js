@@ -24,8 +24,7 @@ app.use(cors());
     .catch((error) => {
       console.log(error);
     });
-})()
-
+})();
 
 app.all("/api/*", auth);
 app.use("/api/data", feedRoutes);

@@ -25,9 +25,13 @@ function Create() {
         "x-auth-token": token,
       },
       body: JSON.stringify(data),
-    }).then(async data=>{
-      const mdata = await data.json()
-      console.log(mdata)})
+    })
+      .then(async (data) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const [name, setname] = useState(false);
@@ -38,13 +42,12 @@ function Create() {
       const theName = await localStorage.getItem("x-auth-token");
       if (theName) {
         setname(true);
-        // setmyname(theName);
       } else {
         navigate("/login");
       }
     }
     getName();
-  }, [name, navigate]);
+  }, [navigate]);
 
   return (
     <div>
