@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 function Profile() {
-  const [name, setname] = useState(false);
   const [data, setData] = useState();
   const [posts, setPosts] = useState();
   const [papers, setPapers] = useState(0);
@@ -30,40 +29,37 @@ function Profile() {
   //     window.location.reload();
   //   })
   // }
+  
 
   useEffect(() => {
-    let controller = new AbortController()
     const getName = async()=> {
       const token = await localStorage.getItem("x-auth-token");
       if (token) {
         const id = await localStorage.getItem("userId");
          const url = "http://localhost:3001/api/user/" + id.replace(/['']+/g,'')
          const urlForData = "http://localhost:3001/api/data/" + id.replace(/['']+/g,'') 
-        setname(true);
+
         await fetch(url, {method: "GET", 
         headers:{ "content-type":"application/json",
-         "x-auth-token":token}, signal: controller.signal}).then(async mydata=>{
+         "x-auth-token":token}}).then(async mydata=>{
            const result = await mydata.json()
            setData(result)
          }).catch(err=>console.log(err))
+
          fetch(urlForData, {
            method:"GET", 
-           headers:{"content-type":"application/json", "x-auth-token":token},signal: controller.signal
+           headers:{"content-type":"application/json", "x-auth-token":token}
           }).then(async data=>{
             const docs = await data.json()
             setPosts(docs)
             setPapers(docs.length)
-            // console.log(posts)
           }).catch(err=>console.log(err))
       } else {
-        navigate("/login");
+        navigate("/login")
       }
     }
     getName();
-    return()=>{
-      controller.abort()
-    }
-  }, [name,navigate,posts]);
+  }, [navigate]);
 
   return (
     <div>

@@ -33,7 +33,7 @@ function Home() {
     getName();
     return () => {
   }
-  }, [name, navigate, data, hisName]);
+  }, [navigate]);
 
   return (
     <div>
