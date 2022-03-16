@@ -42,6 +42,7 @@ function Authors() {
               <AuthorCard
                 key={index}
                 name={item.fullname}
+                id={item._id}
                 followers={item.followers.length}
               />
             ) : null;

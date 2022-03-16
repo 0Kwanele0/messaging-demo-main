@@ -2,12 +2,32 @@ import PrivatePostCard from "../components/PrivatePostCard";
 import styles from "./pageStyles/profile.module.scss";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import AuthorCard from "../components/AuthorCard";
 
 function Profile() {
+  const [feed, setFeed] = useState(true);
+  const [following, setFollowing] = useState(false);
+  const [followers, setFollowers] = useState(false);
   const [data, setData] = useState();
   const [posts, setPosts] = useState();
   const [papers, setPapers] = useState(0);
   let navigate = useNavigate();
+
+  function viewFollowers() {
+    setFollowers(true);
+    setFeed(false);
+    setFollowing(false);
+  }
+  function viewFollowing() {
+    setFollowers(false);
+    setFeed(false);
+    setFollowing(true);
+  }
+  function viewFeed() {
+    setFollowers(false);
+    setFeed(true);
+    setFollowing(false);
+  }
 
   function edituser() {
     navigate("/edit");
@@ -105,27 +125,51 @@ function Profile() {
             </div>
             <div className={styles.hisImage}></div>
             <h2>{data.fullname}</h2>
-            {/* <p>{data.bio.length > 1 ? data.bio : "your bio here"}</p> */}
+            <p>{data.bio ? data.bio : "your bio wiil appear here"}</p>
             <div className={styles.stats}>
-              <p>{data.followers.length} Followers</p>
-              <p>98 Following</p>
-              <p>{papers} Papers</p>
+              <p onClick={viewFeed}>{papers} Papers</p>
+              <p onClick={viewFollowers}>{data.followers.length} Followers</p>
+              <p onClick={viewFollowing}> Following</p>
             </div>
           </div>
-          {posts &&
-            posts.map((item, key) => {
-              return (
-                <PrivatePostCard
-                  title={item.title}
-                  note={item.description}
-                  likes={item.likes}
-                  downloads={item.downloads}
-                  date={item.createdAt}
-                  id={item._id}
-                  key={key}
-                />
-              );
-            })}
+          {feed && (
+            <div>
+              {posts &&
+                posts.map((item, key) => {
+                  return (
+                    <PrivatePostCard
+                      title={item.title}
+                      note={item.description}
+                      likes={item.likes}
+                      downloads={item.downloads}
+                      date={item.createdAt}
+                      id={item._id}
+                      key={key}
+                    />
+                  );
+                })}
+            </div>
+          )}
+          {following && (
+            <div>
+              <h4>following</h4>
+            </div>
+          )}
+          {followers && (
+            <div>
+              {data &&
+                data.followers.map((item, index) => {
+                  return (
+                    <AuthorCard
+                      key={index}
+                      name={item.name}
+                      id={item._id}
+                      followers={33}
+                    />
+                  );
+                })}
+            </div>
+          )}
         </div>
       )}
     </div>

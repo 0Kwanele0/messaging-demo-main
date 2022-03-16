@@ -122,4 +122,16 @@ userRoute.put("/:id", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
+userRoute.put("/addfriend/:id", (req, res) => {
+  const data = {
+    $push: {
+      followers: req.body,
+    },
+  };
+
+  UserModel.updateOne({ _id: req.params.id }, data)
+    .then((friend) => res.send({ res: "friend added" }))
+    .catch((err) => res.send(err));
+});
+
 module.exports = userRoute;
