@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Create() {
+  const [userData, setUserData] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [fullname, setFullname] = useState(null);
+  const [bio, setBio] = useState(null);
+
   const {
     register,
     formState: { errors },
@@ -11,9 +16,11 @@ function Create() {
   } = useForm();
 
   async function postData(data) {
+    console.log("Form submit:", data);
     let userId = localStorage.getItem("userId");
     let token = localStorage.getItem("x-auth-token");
-    const url = "http://localhost:3001/api/user/" + userId.replace(/['']+/g,'')
+    const url =
+      "http://localhost:3001/api/user/" + userId.replace(/['']+/g, "");
     fetch(url, {
       method: "PUT",
       headers: {
@@ -21,10 +28,13 @@ function Create() {
         "x-auth-token": token,
       },
       body: JSON.stringify(data),
-    }).then(async data=>{
-      const mdata = await data.json()
-      console.log(mdata)})
-      navigate("/profile")
+    })
+      .then(async (data) => {
+        const mdata = await data.json();
+        console.log("Database res:", mdata);
+        navigate("/profile");
+      })
+      .catch((err) => console.log("Server err:", err));
   }
 
   const [name, setname] = useState(false);
@@ -33,9 +43,31 @@ function Create() {
   useEffect(() => {
     async function getName() {
       const theName = await localStorage.getItem("x-auth-token");
+      const id = await localStorage.getItem("userId");
       if (theName) {
         setname(true);
-        // setmyname(theName);
+        const url =
+          "http://localhost:3001/api/user/" + id.replace(/['']+/g, "");
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            "x-auth-token": theName,
+          },
+        })
+          .then(async (data) => {
+            const results = await data.json();
+            console.log(results);
+            setUserData(results);
+            setFullname(results.fullname);
+            setUserName(results.username);
+            if (results.bio) {
+              setBio(results.bio);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         navigate("/login");
       }
@@ -50,8 +82,9 @@ function Create() {
           <form action="submit" onSubmit={handleSubmit(postData)}>
             {/* <input {...register("document", { required: false })} type="file" /> */}
             <input
+              defaultValue={fullname}
               {...register("fullname", { required: true, max: 30 })}
-              placeholder="Full name"
+              placeholder={userName}
               type="text"
             />
             {errors.title?.type === "required" && (
@@ -59,7 +92,8 @@ function Create() {
             )}
             <textarea
               {...register("bio", { required: true, max: 40 })}
-              placeholder="Bio"
+              defaultValue={bio ? bio : "Write your bio"}
+              placeholder={bio ? bio : "Write your bio"}
               rows={5}
               type="text"
             />

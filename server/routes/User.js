@@ -104,18 +104,22 @@ userRoute.delete("/:id", async (req, res) => {
 });
 
 userRoute.put("/:id", async (req, res) => {
-  UserModel.findByIdAndUpdate(
-    { _id: req.params.id },
-    {
+  let newValues = {
+    $set: {
+      fullname: req.body.fullname,
       bio: req.body.bio,
-    }
-  ).then((user) => {
-    if (!user) {
-      res.status(404).json({ msg: "user not found" });
-    } else {
-      res.send("User edited!");
-    }
-  });
+    },
+  };
+
+  UserModel.updateOne({ _id: req.params.id }, newValues)
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({ msg: "user not found" });
+      } else {
+        res.send("User edited!");
+      }
+    })
+    .catch((err) => res.send(err));
 });
 
 module.exports = userRoute;
