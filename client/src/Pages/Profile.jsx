@@ -3,6 +3,7 @@ import styles from "./pageStyles/profile.module.scss";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthorCard from "../components/AuthorCard";
+import query from "../modules/query";
 
 function Profile() {
   const [feed, setFeed] = useState(true);
@@ -50,48 +51,24 @@ function Profile() {
       window.location.reload();
     });
   }
+  const id = localStorage.getItem("userId");
+  const url = "http://localhost:3001/api/user/" + id.replace(/['']+/g, "");
+  const urlForData =
+    "http://localhost:3001/api/data/" + id.replace(/['']+/g, "");
+  const token = localStorage.getItem("x-auth-token");
 
   useEffect(() => {
-    const getName = async () => {
-      const token = await localStorage.getItem("x-auth-token");
+    (async function () {
       if (token) {
-        const id = await localStorage.getItem("userId");
-        const url =
-          "http://localhost:3001/api/user/" + id.replace(/['']+/g, "");
-        const urlForData =
-          "http://localhost:3001/api/data/" + id.replace(/['']+/g, "");
-
-        await fetch(url, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            "x-auth-token": token,
-          },
-        })
-          .then(async (mydata) => {
-            const result = await mydata.json();
-            setData(result);
-          })
-          .catch((err) => console.log(err));
-
-        fetch(urlForData, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            "x-auth-token": token,
-          },
-        })
-          .then(async (data) => {
-            const docs = await data.json();
-            setPosts(docs);
-            setPapers(docs.length);
-          })
-          .catch((err) => console.log(err));
+        const info = await query(url, token);
+        setData(info);
+        const myposts = await query(urlForData, token);
+        setPosts(myposts);
+        setPapers(myposts.length);
       } else {
         navigate("/login");
       }
-    };
-    getName();
+    })();
   }, [navigate]);
 
   return (
