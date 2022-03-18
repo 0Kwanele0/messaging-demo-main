@@ -20,19 +20,35 @@ feedRoutes.post("/notes", async (req, res) => {
   }
 });
 
-feedRoutes.get("/", async(req, res)=>{
-  try{
-    Note.find().then(notes=>res.send(notes))
-  }catch(err){
-    res.status(404).send("Unable to retreve data")
+feedRoutes.get("/", async (req, res) => {
+  try {
+    Note.find().then((notes) => res.send(notes));
+  } catch (err) {
+    res.status(404).send("Unable to retreve data");
   }
-})
+});
 
-feedRoutes.get("/:id", async (req, res)=>{
-  Note.find({userId: req.params.id}).then(data=>{res.send(data)}).catch(err=>res.status(404).send({message: "Data not found"}))
-})
-feedRoutes.delete("/:id", async (req, res)=>{
-  Note.findOneAndDelete({_id: req.params.id}).then(data=>{res.send(data)}).catch(err=>res.status(404).send({message: "Data not found"}))
-})
+feedRoutes.get("/:id", async (req, res) => {
+  Note.find({ userId: req.params.id })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => res.status(404).send({ message: "Data not found" }));
+});
+
+feedRoutes.delete("/:id", async (req, res) => {
+  Note.findOneAndDelete({ _id: req.params.id })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => res.status(404).send({ message: "Data not found" }));
+});
+feedRoutes.put("/like/:id", async (req, res) => {
+  Note.updateOne({ _id: req.params.id }, { $inc: { likes: 1 } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => res.status(404).send({ err }));
+});
 
 module.exports = feedRoutes;

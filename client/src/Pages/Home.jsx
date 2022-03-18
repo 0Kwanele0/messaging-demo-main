@@ -41,6 +41,7 @@ function Home() {
               data.map((item, key) => {
                 return (
                   <PostCard
+                    id={item._id}
                     title={item.title}
                     note={item.description}
                     hisname={item.authorName}
